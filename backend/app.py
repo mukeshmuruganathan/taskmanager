@@ -33,14 +33,21 @@ if not MONGO_URI:
     # For now, we'll let it fail later or set a dummy to avoid crash during import
     MONGO_URI = "mongodb://localhost:27017/placeholder_if_missing"
 
-# 3 & 5. MongoDB connection with error handling and logging
 try:
     # serverSelectionTimeoutMS=5000 means it will fail after 5s if can't connect
     client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
     # The ismaster command is cheap and does not require auth.
     client.admin.command('ismaster')
-    db = client.get_default_database() or client.daily_task_list
-    logger.info("Successfully connected to MongoDB Atlas")
+    
+    # Try to get default db, fallback to 'daily_task_list' if not specified in URI
+    try:
+        db = client.get_default_database()
+        if db is None:
+            db = client.daily_task_list
+    except:
+        db = client.daily_task_list
+        
+    logger.info(f"Successfully connected to MongoDB Atlas. Using database: {db.name}")
 except errors.ServerSelectionTimeoutError as err:
     logger.error(f"Could not connect to MongoDB: {err}")
     db = None
