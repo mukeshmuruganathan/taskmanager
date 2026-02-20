@@ -3,7 +3,6 @@ import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import toast from 'react-hot-toast'
-import API_BASE_URL from '../config'
 
 function Register() {
     const [name, setName] = useState('')
@@ -15,7 +14,7 @@ function Register() {
         e.preventDefault()
         setErr('')
         try {
-            const res = await axios.post(`${API_BASE_URL}/register`, { username: name, password: pass })
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, { username: name, password: pass })
             if (res.status === 201) {
                 toast.success('Registration successful!')
                 nav('/login')
