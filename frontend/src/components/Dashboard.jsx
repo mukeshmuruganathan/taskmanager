@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { motion, AnimatePresence } from 'framer-motion'
+import API_BASE_URL from '../config'
 
 function Dashboard({ onLogout }) {
   const [items, setItems] = useState([])
@@ -17,7 +18,7 @@ function Dashboard({ onLogout }) {
 
   async function fetchTasks() {
     try {
-      const res = await axios.get(`http://localhost:5000/tasks?user_id=${userId}`)
+      const res = await axios.get(`${API_BASE_URL}/tasks?user_id=${userId}`)
       setItems(res.data)
     } catch (e) {
       console.error(e)
@@ -29,7 +30,7 @@ function Dashboard({ onLogout }) {
     e.preventDefault()
     if (!text.trim()) return
     try {
-      const res = await axios.post('http://localhost:5000/tasks', { title: text, user_id: userId, priority: prio, due_date: due })
+      const res = await axios.post(`${API_BASE_URL}/tasks`, { title: text, user_id: userId, priority: prio, due_date: due })
       setItems(prev => [...prev, { ...res.data, _id: res.data.task_id }])
       setText('')
       setPrio('Medium')
@@ -42,7 +43,7 @@ function Dashboard({ onLogout }) {
 
   async function delTask(id) {
     try {
-      await axios.delete(`http://localhost:5000/tasks/${id}`)
+      await axios.delete(`${API_BASE_URL}/tasks/${id}`)
       setItems(prev => prev.filter(t => t._id !== id))
       toast.success('Task deleted')
     } catch (e) {
@@ -53,7 +54,7 @@ function Dashboard({ onLogout }) {
   async function toggle(task) {
     try {
       const newStatus = !task.completed
-      await axios.put(`http://localhost:5000/tasks/${task._id}`, { completed: newStatus })
+      await axios.put(`${API_BASE_URL}/tasks/${task._id}`, { completed: newStatus })
       setItems(prev => prev.map(t => t._id === task._id ? { ...t, completed: newStatus } : t))
       if (newStatus) toast.success('Great!')
     } catch (e) {
