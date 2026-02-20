@@ -14,7 +14,10 @@ function Register() {
         e.preventDefault()
         setErr('')
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, { username: name, password: pass })
+            const res = await axios.post(
+                "https://taskmanager-1-4p9a.onrender.com/login",
+                 { username: user, password: pwd }
+            );
             if (res.status === 201) {
                 toast.success('Registration successful!')
                 nav('/login')

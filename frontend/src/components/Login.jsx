@@ -15,7 +15,11 @@ function Login({ onLogin }) {
         e.preventDefault()
         setErr('')
         try {
-            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/login`, { username: user, password: pwd })
+            const res = await axios.post(
+                "https://taskmanager-1-4p9a.onrender.com/login",
+                 { username: user, password: pwd }
+        );
+
             if (res.status === 200) {
                 onLogin(res.data.user_id)
                 toast.success('Welcome back!')
