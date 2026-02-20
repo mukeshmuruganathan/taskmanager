@@ -10,27 +10,27 @@ function Register() {
     const [err, setErr] = useState('')
     const nav = useNavigate()
 
-    const submit = async (e) => {
-         
-            // 👈 ADD THIS
+   const submit = async (e) => {
+    e.preventDefault();
+    console.log("REGISTER SUBMIT CALLED");
+    setErr('');
 
-        e.preventDefault()
-        console.log("SUBMIT CALLED");
-        setErr('')
-        try {
-            const res = await axios.post(
-                "https://taskmanager-1-4p9a.onrender.com/login",
-                 { username: user, password: pwd }
-            );
-            if (res.status === 201) {
-                toast.success('Registration successful!')
-                nav('/login')
-            }
-        } catch (error) {
-            setErr(error.response?.data?.error || 'Registration failed')
-            toast.error('Registration failed')
+    try {
+        const res = await axios.post(
+            "https://taskmanager-1-4p9a.onrender.com/register",
+            { username: name, password: pass }
+        );
+
+        if (res.status === 201) {
+            toast.success("Registration successful!");
+            nav("/login");
         }
+    } catch (error) {
+        setErr(error.response?.data?.error || "Registration failed");
+        toast.error("Registration failed");
     }
+};
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-neutral-900">
