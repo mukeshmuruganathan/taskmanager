@@ -11,7 +11,11 @@ function Register() {
     const nav = useNavigate()
 
     const submit = async (e) => {
+         
+            // 👈 ADD THIS
+
         e.preventDefault()
+        console.log("SUBMIT CALLED");
         setErr('')
         try {
             const res = await axios.post(

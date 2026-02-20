@@ -13,6 +13,7 @@ function Login({ onLogin }) {
     // try to login
     const submit = async (e) => {
         e.preventDefault()
+        console.log("SUBMIT CALLED");
         setErr('')
         try {
             const res = await axios.post(
